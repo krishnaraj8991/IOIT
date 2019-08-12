@@ -35,7 +35,9 @@ def get_img():
     cv2.waitKey(0)
 
 TCP_IP = 'localhost'
-TCP_PORT = 9001
+TCP_IP = '192.168.0.106'
+
+TCP_PORT = 9004
 BUFFER_SIZE = 1024
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
