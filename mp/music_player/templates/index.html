@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>MUSIC PLAYER</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+      <script type="text/javascript">
+         var socket ;
+         $(document).ready(function() {
+            // socket = io.connect('http://127.0.0.1:5000');
+            socket= io.connect(window.location.href);
+           // sending a connect request to the server.
+         
+           // An event handler for a change of value 
+           $('input.sync').on('input', function(event) {
+               socket.emit('Slider value changed', {
+                   who: $(this).attr('id'),
+                   data: $(this).val()
+               });
+               return false;
+            });
+           
+           socket.on('after connect', function(msg) {
+               console.log('After connect', msg.list);
+               document.getElementById('table').innerHTML = ''
+               msg.list.forEach(add);
+           });
+         
+           socket.on('update value', function(msg) {
+               console.log('Slider value updated');
+               $('#' + msg.who).val(msg.data);
+           });
+           socket.on('set max', function(msg) {
+               console.log('new length ='+msg.length);
+               // $('#' + msg.who).val(msg.data);
+               document.getElementById("slider1").max=msg.length;
+               // document.getElementById("slider1").val=0;
+           });
+         });
+         var paly_pause=false
+         var que=[]
+         index=0
+         var limit=0
+         function clicked(){
+            console.log(paly_pause)
+            // var socket = io.connect('http://127.0.0.1:5000');
+            socket.emit('play_pause', "hi");
+            paly_pause=!paly_pause
+         }
+         
+         function nextbt(){
+            console.log('next'+index+' '+limit)
+            if(index+1<=limit){
+            // var socket = io.connect('http://127.0.0.1:5000');
+            socket.emit('next', "hi");
+            var cs=document.getElementById("current_song")
+            cs.innerHTML="Playing :- "+que[index++]
+            }
+         }
+         function add(data,index) {
+               console.log('called')
+               var table = document.getElementById("table");
+               var row = table.insertRow(-1);
+               var cell1 = row.insertCell(0);
+               //   var cell2 = row.insertCell(1);
+               cell1.innerHTML = "<a href=\"javascript:list_clicked('"+data+"')\" title=\"Get some foo!\" id=\"foo\">"+data+"</a>";
+               //   cell2.innerHTML = "NEW CELL2";
+
+               // var fs = require('fs');
+               // var files = fs.readdirSync('/songs');
+               // console.log(files)
+         }
+         function list_clicked(data) {
+            console.log(data);
+            socket.emit('play track', {'data':data});
+            que.push(data)
+            limit++
+            // var socket = io.connect('http://127.0.0.1:5000');
+         }
+      </script>
+   </head>
+   <body>
+      <div class="container text-center">
+         <h1 >MUSIC PLAYER</h1>
+         <table  id="table" align="center">
+
+         </table>
+         <form class="mt-5">
+            <div class="form-group">
+               <label for="formControlRange">Track</label>
+               <input type="range" class="form-control-range sync" id="slider1" min="0" max="210" value="{{slider1}}">
+            </div>
+            <!-- <div class="form-group">
+               <label for="formControlRange">Demo Slider 2</label>
+               <input type="range" class="form-control-range sync" id="slider2" min="0" max="50" value="{{slider2}}">
+            </div> -->
+            <button type="button" id="play/pause" onclick="clicked()">play/pause</button>
+            <button type="button" id="next" onclick="nextbt()">NEXT</button>
+            <h2 id="current_song">Playing :- 01. Whatever_It_Takes2.wav</h2>
+         </form>
+      </div>
+   </body>
+</html>
