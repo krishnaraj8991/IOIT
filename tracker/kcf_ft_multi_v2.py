@@ -9,9 +9,10 @@ def face_detect(video,pretraker,mode):
            3 lost some trackers
     """
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    # face_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
     flag = True
     bbox = (287, 23, 86, 320)
-    print("mode:-"+str(mode))
+    # print("mode:-"+str(mode))
     trackers=[]
         
     while flag:
@@ -44,13 +45,13 @@ def face_detect(video,pretraker,mode):
             flag=False
             # k = cv2.waitKey(0)
     if trackers:
-        print("new tracker")
+        # print("new tracker")
         if mode ==2:
             for tracker in pretraker:
                 trackers.append(tracker)
         return trackers
     else:
-        print("old tracker") 
+        # print("old tracker") 
         return pretraker
 if __name__ == '__main__' :
     
@@ -131,10 +132,18 @@ if __name__ == '__main__' :
                 trackers=face_detect(video,trackers,1)
             cnt=0
             # print(len(trackers))
-            print("trackers:-"+str(len(trackers)))
+            # print("trackers:-"+str(len(trackers)))
             
             flag= False
         # Exit if ESC pressed
         k = cv2.waitKey(1) & 0xff
         if k == 27 : break
+        if k == ord('c'):
+            for tracker in trackers:
+                for temp in trackers:
+                    if temp==tracker:
+                        print("true,",end=" ")
+                    else:
+                        print("false,",end=" ")
+                print(" ")
         cnt+=1
