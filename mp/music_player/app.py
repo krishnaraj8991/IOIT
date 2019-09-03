@@ -70,6 +70,7 @@ def play_track(msg):
     print("songs\\"+msg['data'])
     global player
     global next_dur
+
     # player = pyglet.media.Player()
     song = pyglet.media.load(str("songs\\"+msg['data']), streaming=False)
     # next_dur=song.duration
@@ -103,7 +104,9 @@ player=None
 def player_thread():
     global player
     # global nextflag
-    music = pyglet.resource.media('songs\\01. Whatever_It_Takes2.wav')
+    files = os.listdir("songs")
+    print(files[0])
+    music = pyglet.resource.media(str("songs\\"+files[0]), streaming=False)
     player = pyglet.media.Player()
     player.queue(music)
     def update(dt):

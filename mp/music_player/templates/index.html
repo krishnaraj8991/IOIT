@@ -25,6 +25,8 @@
            socket.on('after connect', function(msg) {
                console.log('After connect', msg.list);
                document.getElementById('table').innerHTML = ''
+               var cs=document.getElementById("current_song")
+               cs.innerHTML="Playing :- "+msg.list[0]
                msg.list.forEach(add);
            });
          
