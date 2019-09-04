@@ -19,6 +19,8 @@ import numpy as np
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+mplayer=None
 values = {
     'slider1': 0,
     'slider2': 0,
@@ -27,10 +29,20 @@ play_pause=False
 next_dur=0
 @app.route('/')
 def index():
+    print("new index")
     return render_template('index.html',**values)
 
 @socketio.on('connect')
 def test_connect():
+    print("new connection")
+
+    global mplayer
+    mplayer=threading.Thread(target=player_thread,args=())
+    mplayer.daemon=True
+    mplayer.start()
+
+
+
     files = os.listdir("songs")
     # print(files)
     emit('after connect',  {'data':'Lets dance','list':files})
@@ -141,10 +153,10 @@ def nextsong():
     player.next_source()
 # ---------------------------------------------------------------
  
+
 mplayer=threading.Thread(target=player_thread,args=())
 mplayer.daemon=True
 mplayer.start()
-
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
