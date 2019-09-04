@@ -23,7 +23,7 @@ socketio = SocketIO(app)
 mplayer=None
 values = {
     'slider1': 0,
-    'slider2': 0,
+    'slider2': 100,
 }
 play_pause=False
 next_dur=0
@@ -37,16 +37,17 @@ def test_connect():
     print("new connection")
 
     global mplayer
+    global player
+    player=None
     mplayer=threading.Thread(target=player_thread,args=())
     mplayer.daemon=True
     mplayer.start()
 
 
-
     files = os.listdir("songs")
     # print(files)
     emit('after connect',  {'data':'Lets dance','list':files})
-    emit('after connect',  {'data':'Lets dance','list':files})
+    # emit('after connect',  {'data':'Lets dance','list':files})
 @socketio.on('Slider value changed')
 def value_changed(message):
     print(message)
@@ -54,7 +55,10 @@ def value_changed(message):
     print("value changed")
     emit('update value', message, broadcast=True)
     # print(int(message['data']))
-    seek(int(message['data']))
+    if message['who']=='slider1':
+        seek(int(message['data']))
+    else:
+        volume(int(message['data']))    
 
 @socketio.on('play_pause')
 def button_pressed(message):
@@ -93,6 +97,7 @@ def play_track(msg):
 @socketio.on('next')
 def next(msg):
     print('next')
+    global player
     nextsong()
     next_dur=player.source.duration
     print(next_dur)
@@ -151,12 +156,15 @@ def exit():
 def nextsong():
     global player
     player.next_source()
+def volume(value):
+    global player
+    player.volume= value/100  
 # ---------------------------------------------------------------
  
 
-mplayer=threading.Thread(target=player_thread,args=())
-mplayer.daemon=True
-mplayer.start()
+# mplayer=threading.Thread(target=player_thread,args=())
+# mplayer.daemon=True
+# mplayer.start()
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
