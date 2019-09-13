@@ -36,14 +36,7 @@ def index():
 def test_connect():
     print("new connection")
 
-    global mplayer
-    global player
-    player=None
-    mplayer=threading.Thread(target=player_thread,args=())
-    mplayer.daemon=True
-    mplayer.start()
-
-
+    restart()
     files = os.listdir("songs")
     # print(files)
     emit('after connect',  {'data':'Lets dance','list':files})
@@ -138,9 +131,9 @@ def player_thread():
         # if player.playing and player.time>1:
         #     print(player.time)
         #     value_updated(int(player.time))
-        
     pyglet.clock.schedule_interval(update, 0.1) 
     pyglet.app.run()
+
 def seek(value):
     global player
     player.seek(value)  
@@ -158,7 +151,17 @@ def nextsong():
     player.next_source()
 def volume(value):
     global player
-    player.volume= value/100  
+    player.volume= value/100 
+def restart():
+    global mplayer
+    global player
+    # if mplayer != None:
+    # pyglet.app.exit()
+    # player=None
+    # mplayer=None
+    mplayer=threading.Thread(target=player_thread,args=())
+    mplayer.daemon=True
+    mplayer.start()
 # ---------------------------------------------------------------
  
 
@@ -168,3 +171,5 @@ def volume(value):
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
+    
+   
