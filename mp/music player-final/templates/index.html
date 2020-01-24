@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>MUSIC PLAYER</title>
+   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+   <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed&display=swap" rel="stylesheet">
+   <script src="https://kit.fontawesome.com/f6a6fb48a6.js"></script>
+   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton&display=swap">
+    -->
+   <link rel="stylesheet" href="/static/styles/additional_files/bootstrap.min.css">
+   <link href="/static/styles/additional_files/googleapis.css" rel="stylesheet">
+   <!-- <script src="/static/styles/additional_files/f6a6fb48a6.js"></script> -->
+   <!-- <script  defer src="/static/styles/additional_files/fontawesome-free-5.11.2-web/js/all.js"></script> -->
+   <script src="/static/styles/additional_files/jquery-3.3.1.js"></script>
+   <script src="/static/styles/additional_files/socket.io.js"></script>
+   <link rel="stylesheet" href="/static/styles/additional_files/googleapis_monoton.css">
+   <link rel="stylesheet" href="/static/styles/additional_files/fontawesome-free-5.11.2-web/css/all.css">
+   
+   
+   <!-- <script src="/static/styles/verscript.js"></script> -->
+   <script src="/static/styles/homescript.js"></script>
+   
+   <!-- <link rel="stylesheet" href="/static/styles/verstyle.css"> -->
+   <!-- <link rel="stylesheet" href="/static/styles/horstyle.css"> -->
+   <link rel="stylesheet" href="/static/styles/homestyle.css">
+   
+</head>
+
+<body>
+   <!-- <span style="float: right"><button><a href="horindex.html">click</a></button></span> -->
+   <!-- <span style="float: right"><button><a href="/hr">click</a></button></span> -->
+   
+   <span><img src="/static/images/cht.png" alt="cherry tones" title="Cherry Tones"></span>
+   <div class="container text-center">
+
+      <p>MUSIC &nbsp;&nbsp; PLAYER</p>
+      <!-- <table id="table" align="center">
+      </table> -->
+      <table id="table_v" align="center">
+      </table>
+      <table id="table_h" align="center">
+      </table>
+      <!-- <div  style="overflow-y:auto;height: 500px;">
+      </div> -->
+      <form class="mt-5">
+
+         <div class="form-group rel">
+
+            <input type="range" class="form-control-range sync rell" id="slider1" min="0" max="210" value="{{slider1}}">
+
+            <div class="volb">
+               <button class="fas fa-volume-up containers-items" onclick=""></button>
+            </div>
+
+            <div class="vol">
+               <input type="range" class="form-control-range sync " id="slider2" min="0" max="100" value="{{slider2}}">
+            </div>
+
+         </div>
+
+         <div class="cntbtn">
+            <button type="button" id="next" onclick="nextbt()" class="fas fa-fast-backward sty">&nbsp;</button>
+            <button type="button" id="play/pause" class="fas fa-play sty " onclick="clicked()">&nbsp;</button>
+            <button type="button" id="next" class="fas fa-fast-forward sty " onclick="nextbt()">&nbsp;</button>
+         </div>
+
+         <marquee behavior="scroll" direction="left" scrollamount="5s" width="30%" height="10%">
+            <h3 id="current_song">Avicii - Waiting For Love</h2>
+         </marquee>
+
+      </form>
+   </div>
+
+</body>
+
+</html>
